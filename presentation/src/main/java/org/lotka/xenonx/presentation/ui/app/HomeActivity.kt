@@ -14,8 +14,6 @@ import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.lotka.xenonx.presentation.ui.navigation.HomeScreensNavigation
 
-
-
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     @OptIn(ExperimentalComposeUiApi::class)

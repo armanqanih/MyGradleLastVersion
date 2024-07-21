@@ -1,8 +1,4 @@
 package org.lotka.xenonx.presentation.ui.app
-
-
-
-
 import android.annotation.SuppressLint
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
