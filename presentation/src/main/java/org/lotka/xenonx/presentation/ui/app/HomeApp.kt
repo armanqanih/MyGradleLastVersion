@@ -26,6 +26,7 @@ import org.lotka.xenonx.presentation.ui.screen.detail.DetailScreen
 import org.lotka.xenonx.presentation.ui.screen.detail.DetailViewModel
 import org.lotka.xenonx.presentation.ui.screen.home.HomeScreen
 import org.lotka.xenonx.presentation.ui.screen.home.HomeViewModel
+import org.lotka.xenonx.presentation.ui.screen.search.SearchScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
@@ -59,8 +60,8 @@ fun HomeApp(
                 composable(route = ScreenNavigation.DetailRoutScreen.route + "/{coinId}") {
                     DetailScreen()
                 }
-                composable(route = ScreenNavigation.BookMarkRoutScreen.route) {
-                    // BookmarkScreen composable should be added here
+                composable(route = ScreenNavigation.SearchRouteScreen.route) {
+                    SearchScreen(navController)
                 }
             }
         }

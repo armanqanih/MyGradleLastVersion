@@ -46,7 +46,7 @@ fun CoinCard(
 
         ) {
             Text(
-                text = "${coin.name} ${coin.symbol} ${coin.rank} ",
+                text = "${coin.rank} ${coin.name} ${coin.symbol}  ",
                 style = androidx.compose.material.MaterialTheme.typography.body1,
                 color =  Color.Black // default color if rank is not 1 or 2
                ,
