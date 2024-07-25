@@ -14,7 +14,12 @@ interface CoinRepository {
 
     suspend fun getCoinById(coinId: String):Flow<Resource<CoinDetailModel>>
 
-    suspend fun searchCoins(query: String):Flow<Resource<List<CoinModel>>>
+    suspend fun searchCoins(query: String): Flow<Resource<List<CoinModel>>>
+
+    suspend fun getCoinsOfLocal(): Flow<List<CoinModel>>
+
+    suspend fun updateData(coins: List<CoinModel>)
+
 
 
 

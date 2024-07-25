@@ -10,6 +10,6 @@ data class CoinModel(
     val name: String?,
     val rank: Int?,
     val symbol: String?,
-    val type: String?,
-    val isNew: Boolean?
+    val type: String?=null,
+    val isNew: Boolean?=null,
 ): Parcelable

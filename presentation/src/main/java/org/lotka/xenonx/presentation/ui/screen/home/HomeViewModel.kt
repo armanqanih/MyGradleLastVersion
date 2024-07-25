@@ -7,13 +7,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.lotka.xenonx.domain.model.CoinModel
 import org.lotka.xenonx.domain.usecase.GetCoinsUseCase
+import org.lotka.xenonx.domain.usecase.GetLocalCoinsUseCase
+import org.lotka.xenonx.domain.usecase.UpdateCoinsUseCase
 import org.lotka.xenonx.domain.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor (
-    private val getCoinsUseCase: GetCoinsUseCase
+    private val getCoinsUseCase: GetCoinsUseCase,
+    private val updateCoins: UpdateCoinsUseCase,
+    private val getCoinFromDataBase: GetLocalCoinsUseCase
 ):ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
@@ -23,7 +28,8 @@ class HomeViewModel @Inject constructor (
 
 
     init {
-      getCoins(page = pages)
+        getCoins(page = pages)
+        getCoinsOfDataBase()
     }
 
 
@@ -62,6 +68,8 @@ class HomeViewModel @Inject constructor (
                                isLoading = false,
                                coins = coins, page = it.page + 1)
                        }
+                       updateCoinsOfDataBase(coins)
+
                    }
                 }
 
@@ -71,6 +79,28 @@ class HomeViewModel @Inject constructor (
             }
         }
     }
+
+
+    private fun updateCoinsOfDataBase(coins: List<CoinModel>) {
+        viewModelScope.launch {
+            updateCoins(coins)
+        }
+    }
+
+     fun getCoinsOfDataBase() {
+         viewModelScope.launch {
+             getCoinFromDataBase().collect { coins ->
+                 _state.update {
+                     it.copy(
+                         coins = coins,
+                         isLoading = false
+
+                     ) }
+             }
+         }
+     }
+
+
 
 
 }

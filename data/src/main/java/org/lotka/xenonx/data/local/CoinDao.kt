@@ -6,20 +6,23 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import org.lotka.xenonx.data.local.entity.CoinEntity
 import org.lotka.xenonx.data.model.CoinDetailDto
 
 @Dao
 interface CoinDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(coin: CoinDetailDto)
+    suspend fun updateData(coins: List<CoinEntity>)
 
-    @Delete
-    suspend fun delete(coin: CoinDetailDto)
+    @Query("SELECT * FROM coins WHERE name LIKE name || :query || '%' OR symbol LIKE '%' || :query || '%'")
+    fun searchCoins(query: String): Flow<List<CoinEntity>>
 
-    @Query("SELECT * FROM coin_db")
-    fun getCoins(): Flow<List<CoinDetailDto>>
+    @Query("SELECT * FROM coins")
+    fun getAllCoins(): Flow<List<CoinEntity>>
 
-    @Query("SELECT * FROM coin_db WHERE id = :id")
-    suspend fun getCoinById(id: String): CoinDetailDto?
+
+    @Query("SELECT * FROM coins WHERE id = :coinId")
+    fun getCoinById(coinId: String): Flow<CoinEntity?>
+
 }

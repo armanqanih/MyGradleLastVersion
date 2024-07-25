@@ -8,63 +8,53 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.domain.usecase.SearchCoinUseCase
+
 import org.lotka.xenonx.domain.util.Resource
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val searchCoinUseCase: SearchCoinUseCase
-): ViewModel() {
+    private val searchCoinsUseCase: SearchCoinUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchState())
     val state = _state.asStateFlow()
 
 
 
+
     fun onEvent(event: SearchEvent) {
         when (event) {
             is SearchEvent.UpdateSearchQuery -> {
-             _state.update { it.copy(searchQuery = event.query) } }
+               _state.update { it.copy(searchQuery = event.query) }
+            }
             is SearchEvent.SearchCoins -> {
-                searchCoins()
+                searchCoins(_state.value.searchQuery)
             }
         }
     }
 
-
-
-    fun searchCoins() {
+    private fun searchCoins(query: String) {
         viewModelScope.launch {
-            val query = _state.value.searchQuery
-            searchCoinUseCase(query).collect{result->
-                when(result){
-                    is Resource.Loading -> {
-                    _state.update {
-                        it.copy(isLoading = true)
-                    }
-                    }
+            searchCoinsUseCase(query).collect { result ->
+                when (result) {
                     is Resource.Success -> {
-                        result.data?.let { coins ->
-                            _state.update {
-                                it.copy(
-                                    isLoading = false,
-                                    coins = coins)
-                            }
-                        }
+                        _state.value = _state.value.copy(
+                            coins = result.data ?: emptyList(),
+                            isLoading = false
+                        )
                     }
                     is Resource.Error -> {
-                  _state.update {
-                      it.copy(
-                          isLoading = false,
-                          error = result.message
-                      )
-                  } } }
-
-
+                        _state.value = _state.value.copy(
+                            error = result.message,
+                            isLoading = false
+                        )
+                    }
+                    is Resource.Loading -> {
+                        _state.value = _state.value.copy(isLoading = true)
+                    }
+                }
             }
         }
-
     }
-
-
 }

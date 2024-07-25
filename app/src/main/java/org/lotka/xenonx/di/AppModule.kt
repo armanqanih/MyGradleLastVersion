@@ -12,6 +12,7 @@ import org.lotka.xenonx.data.api.BASE_URL
 import org.lotka.xenonx.data.api.CoinPaprikaApi
 import org.lotka.xenonx.data.local.CoinDao
 import org.lotka.xenonx.data.local.CoinDatabase
+import org.lotka.xenonx.data.model.convert.Converters
 
 
 import retrofit2.Retrofit
@@ -40,6 +41,21 @@ object AppModule {
             .build()
             .create(CoinPaprikaApi::class.java)
     }
+
+
+    @Provides
+    @Singleton
+    fun provideNewsDatabase(
+        application: Application
+    ): CoinDatabase {
+        return Room.databaseBuilder(
+            context = application,
+            klass = CoinDatabase::class.java,
+            name = "news_db"
+        ).fallbackToDestructiveMigration()
+            .build()
+    }
+
 
 
 
