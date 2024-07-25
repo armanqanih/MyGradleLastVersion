@@ -2,6 +2,7 @@ package org.lotka.xenonx.di
 
 import android.app.Application
 import androidx.room.Room
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,8 +14,6 @@ import org.lotka.xenonx.data.api.CoinPaprikaApi
 import org.lotka.xenonx.data.local.CoinDao
 import org.lotka.xenonx.data.local.CoinDatabase
 import org.lotka.xenonx.data.model.convert.Converters
-
-
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -42,22 +41,39 @@ object AppModule {
             .create(CoinPaprikaApi::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideConverters(gson: Gson): Converters {
+        return Converters(gson)
+    }
 
     @Provides
     @Singleton
     fun provideNewsDatabase(
-        application: Application
+        application: Application,
+        converters: Converters
     ): CoinDatabase {
         return Room.databaseBuilder(
-            context = application,
-            klass = CoinDatabase::class.java,
-            name = "news_db"
-        ).fallbackToDestructiveMigration()
+            application,
+            CoinDatabase::class.java,
+            "news_db"
+        ).addTypeConverter(converters) // Ensure this method is available in your Room version
+            .fallbackToDestructiveMigration()
             .build()
     }
 
-
-
+    @Provides
+    @Singleton
+    fun provideNewsDao(coinDatabase: CoinDatabase): CoinDao {
+        return coinDatabase.coinDao()
+    }
+}
 
 //    @Provides
 //    @Singleton
@@ -73,10 +89,3 @@ object AppModule {
 //            upsertArticle = UpsertArticle(newsRepository)
 //        )
 //    }
-
-    @Provides
-    @Singleton
-    fun provideNewsDao(
-        coinDatabase: CoinDatabase
-    ): CoinDao = coinDatabase.coinDao()
-}

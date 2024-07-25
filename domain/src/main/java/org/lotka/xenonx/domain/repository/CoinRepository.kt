@@ -20,6 +20,10 @@ interface CoinRepository {
 
     suspend fun updateData(coins: List<CoinModel>)
 
+    suspend fun updateCoinDetail(coinDetail: CoinDetailModel)
+
+    suspend fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?>
+
 
 
 

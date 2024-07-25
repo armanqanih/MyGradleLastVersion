@@ -28,6 +28,7 @@ import org.lotka.xenonx.presentation.theme.Magenta
 import org.lotka.xenonx.presentation.theme.PrimaryDark
 import org.lotka.xenonx.presentation.theme.Red
 import org.lotka.xenonx.presentation.theme.coolGray
+import org.lotka.xenonx.presentation.theme.kilidPrimaryColor
 
 @Composable
 fun CoinCard(

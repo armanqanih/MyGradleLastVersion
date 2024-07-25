@@ -57,7 +57,7 @@ class HomeViewModel @Inject constructor (
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            error = result.message ?: "An unexpected error occured") } }
+                            error = result.message ?: "Check your internet connection") } }
                 is Resource.Loading -> {
                     _state.update {it.copy(isLoading = true) }
                 }
@@ -68,6 +68,7 @@ class HomeViewModel @Inject constructor (
                                isLoading = false,
                                coins = coins, page = it.page + 1)
                        }
+
                        updateCoinsOfDataBase(coins)
 
                    }

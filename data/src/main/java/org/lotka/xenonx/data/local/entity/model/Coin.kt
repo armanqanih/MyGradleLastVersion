@@ -1,12 +1,13 @@
-package org.lotka.xenonx.data.local.entity
+package org.lotka.xenonx.data.local.entity.model
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.android.parcel.Parcelize
+import androidx.room.TypeConverters
+import org.lotka.xenonx.data.model.convert.Converters
 import org.lotka.xenonx.domain.model.CoinModel
 
 @Entity(tableName = "coins")
+
 data class CoinEntity(
     @PrimaryKey val id: String,
     val isActive: Boolean?,

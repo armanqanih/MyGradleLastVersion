@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.lotka.xenonx.presentation.theme.Green
 import org.lotka.xenonx.presentation.theme.PrimaryDark
+import org.lotka.xenonx.presentation.theme.kilidPrimaryColor
 
 @Composable
 fun CoinTag(
@@ -23,14 +24,14 @@ fun CoinTag(
         modifier = Modifier
             .border(
                 width = 1.dp,
-                color = Color.Green,
+                color =kilidPrimaryColor,
                 shape = RoundedCornerShape(100.dp)
             )
             .padding(10.dp)
     ) {
         Text(
             text = tag,
-            color = Color.Green,
+            color = kilidPrimaryColor,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.body2,
             fontWeight = FontWeight.Bold

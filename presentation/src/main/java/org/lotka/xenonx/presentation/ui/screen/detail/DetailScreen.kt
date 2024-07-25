@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import org.lotka.xenonx.presentation.theme.PrimaryDark
 import org.lotka.xenonx.presentation.theme.gold
+import org.lotka.xenonx.presentation.theme.kilidPrimaryColor
 import org.lotka.xenonx.presentation.ui.screen.detail.compose.CoinTag
 import org.lotka.xenonx.presentation.ui.screen.detail.compose.TeamListItem
 
@@ -120,7 +122,17 @@ fun DetailScreen(
             )
         }
         if(state.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            CircularProgressIndicator(
+                color = kilidPrimaryColor,
+                modifier = Modifier.align(Alignment.Center)
+                    .size(50.dp)
+                ,
+                strokeWidth = 8.dp,
+                strokeCap = StrokeCap.Round,
+                backgroundColor = Color.White,
+
+
+                )
         }
     }
 }

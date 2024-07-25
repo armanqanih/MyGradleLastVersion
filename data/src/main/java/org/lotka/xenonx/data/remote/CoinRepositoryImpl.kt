@@ -5,8 +5,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import org.lotka.xenonx.data.api.CoinPaprikaApi
 import org.lotka.xenonx.data.local.CoinDao
-import org.lotka.xenonx.data.local.entity.toCoinEntity
-import org.lotka.xenonx.data.local.entity.toCoinModel
+import org.lotka.xenonx.data.local.entity.model.toCoinDetailEntity
+import org.lotka.xenonx.data.local.entity.model.toCoinDetailModel
+import org.lotka.xenonx.data.local.entity.model.toCoinEntity
+import org.lotka.xenonx.data.local.entity.model.toCoinModel
 import org.lotka.xenonx.data.model.toCoinDetailModel
 
 import org.lotka.xenonx.data.model.toCoinModel
@@ -66,6 +68,14 @@ class CoinRepositoryImpl @Inject constructor(
 
     override suspend fun updateData(coins: List<CoinModel>) {
         coinDao.updateData(coins.map { it.toCoinEntity() })
+    }
+
+    override suspend fun updateCoinDetail(coinDetail: CoinDetailModel) {
+        coinDao.updateCoinDetail(coinDetail.toCoinDetailEntity())
+    }
+
+    override suspend fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?> {
+        return coinDao.getCoinDetailByIdInDataBase(coinId).map { it?.toCoinDetailModel() }
     }
 
 

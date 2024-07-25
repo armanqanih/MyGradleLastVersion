@@ -23,6 +23,7 @@ fun CoinListItem(
         verticalArrangement = Arrangement.spacedBy(MediumPadding1),
         contentPadding = PaddingValues(all = ExtraSmallPadding2)
     ) {
+
         items(count = state.coins.size) {
             state.coins[it]?.let { coin ->
                 CoinCard(coin = coin, onClick = { onClick(coin) })

@@ -3,14 +3,12 @@ package org.lotka.xenonx.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import org.lotka.xenonx.data.local.entity.CoinEntity
+import org.lotka.xenonx.data.local.entity.model.CoinDetailEntity
+import org.lotka.xenonx.data.local.entity.model.CoinEntity
 
-import org.lotka.xenonx.data.model.CoinDetailDto
 import org.lotka.xenonx.data.model.convert.Converters
-import org.lotka.xenonx.domain.model.CoinDetailModel
 
-@Database(entities = [CoinEntity::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class)
+@Database(entities = [CoinEntity::class, CoinDetailEntity::class], version = 2, exportSchema = false) // Incremented version number from 1 to 2@TypeConverters(Converters::class)
 abstract class CoinDatabase : RoomDatabase() {
     abstract fun coinDao(): CoinDao
 
