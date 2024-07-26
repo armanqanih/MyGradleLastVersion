@@ -15,7 +15,7 @@ interface CoinDao {
     suspend fun updateData(coins: List<CoinEntity>)
 
     @Query("SELECT * FROM coins WHERE name LIKE name || :query || '%' OR symbol LIKE '%' || :query || '%'")
-    fun searchCoins(query: String): Flow<List<CoinEntity>>
+    fun searchCoins(query: String):  List<CoinEntity>
 
     @Query("SELECT * FROM coins")
     fun getAllCoins(): Flow<List<CoinEntity>>
@@ -30,6 +30,10 @@ interface CoinDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateCoinDetail(coinDetail: CoinDetailEntity)
+
+
+
+
 
 
 

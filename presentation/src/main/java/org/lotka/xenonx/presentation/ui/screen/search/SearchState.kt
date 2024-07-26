@@ -6,5 +6,5 @@ data class SearchState(
     val searchQuery: String = "",
     val coins: List<CoinModel> = emptyList(),
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )

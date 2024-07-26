@@ -65,6 +65,8 @@ class DetailViewModel@Inject constructor(
                             it.copy(isLoading = true)
                         }
                     }
+
+                    else -> {}
                 }
             }
         }
