@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.lotka.xenonx.domain.model.CoinDetailModel
+import org.lotka.xenonx.domain.usecase.DeleteCoinOfBookMark
 import org.lotka.xenonx.domain.usecase.GetCoinByIdUseCase
 import org.lotka.xenonx.domain.usecase.GetCoinsLocalByIdUseCase
 import org.lotka.xenonx.domain.usecase.UpdateCoinsDetailUseCase
@@ -20,8 +21,10 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel@Inject constructor(
     private val getCoinByIdUseCase: GetCoinByIdUseCase,
-    private val getCoinsLocalById: GetCoinsLocalByIdUseCase,
-    private val updateCoinsDetail: UpdateCoinsDetailUseCase,
+    private val getCoinsLocalByIdUseCase: GetCoinsLocalByIdUseCase,
+    private val updateCoinsDetailUseCase: UpdateCoinsDetailUseCase,
+    private val deleterCoinUseCase: DeleteCoinOfBookMark,
+    private val updateCoinUseCase: UpdateCoinsDetailUseCase,
     savedStateHandle: SavedStateHandle
 ):ViewModel() {
 
@@ -36,6 +39,36 @@ class DetailViewModel@Inject constructor(
            getCoinLocalById(coinId)
         }
     }
+
+
+    fun onEvent(event: DetailEvent){
+        when(event){
+            DetailEvent.ShowSnackBar ->{
+                _state.update {
+                    it.copy(
+                        snackBarVisible = true,
+                            snackBarMessage = "Coin Saved Successfully"
+                        )
+                }
+            }
+            is DetailEvent.UpdateAndDeleterCoin -> {
+                viewModelScope.launch {
+                    val coinId = getCoinsLocalByIdUseCase.invoke(event.coin.coinId)
+                    if (coinId == null){
+                       updateCoinUseCase.invoke(event.coin)
+                    }else{
+                        deleterCoinUseCase.invoke(event.coin)
+                    }
+
+                }
+            }
+        }
+    }
+
+
+
+
+
 
     private fun getCoinById(coinId: String) {
         viewModelScope.launch {
@@ -74,13 +107,13 @@ class DetailViewModel@Inject constructor(
 
     fun updateCoinDetail(coinDetail: CoinDetailModel) {
         viewModelScope.launch {
-            updateCoinsDetail.invoke(coinDetail)
+            updateCoinsDetailUseCase.invoke(coinDetail)
         }
     }
 
     fun getCoinLocalById(coinId: String) {
         viewModelScope.launch {
-            getCoinsLocalById.invoke(coinId).collect { coinDetail ->
+            getCoinsLocalByIdUseCase.invoke(coinId).collect { coinDetail ->
                 _state.update {
                     it.copy(
                         coin = coinDetail

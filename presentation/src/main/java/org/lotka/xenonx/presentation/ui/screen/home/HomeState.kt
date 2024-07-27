@@ -7,5 +7,5 @@ data class HomeState(
     val coins: List<CoinModel> = emptyList(),
     val error: String = "",
     val page: Int = 1,
-    val isNavigateToCoinDetailScreen: Boolean = false,
+    val isNavigateToNewPage: Boolean = false,
 )

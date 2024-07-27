@@ -113,5 +113,8 @@
     <string name="emile1">Email</string>
     <string name="add_chat">add member\n</string>
     <string name="loading_more_data">Getting more...</string>
+    <string name="Home">home</string>
+    <string name="search">Search</string>
+    <string name="bookmark">BookMark</string>
 
 </resources>

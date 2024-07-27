@@ -1,12 +1,12 @@
 package org.lotka.xenonx.presentation.ui.screen.home
 
+import BottomNavigationBar
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,6 +16,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,27 +32,31 @@ import androidx.navigation.NavHostController
 import org.lotka.xenonx.presentation.theme.kilidPrimaryColor
 
 import org.lotka.xenonx.presentation.ui.navigation.ScreenNavigation
-import org.lotka.xenonx.presentation.ui.screen.compose.ArmanSearchBar
 import org.lotka.xenonx.presentation.ui.screen.home.compose.CoinCard
 
-import org.lotka.xenonx.presentation.ui.screen.home.compose.CoinListItem
 import org.lotka.xenonx.presentation.util.Dimens.ExtraSmallPadding2
 import org.lotka.xenonx.presentation.util.Dimens.MediumPadding1
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = hiltViewModel(),
+   viewModel: HomeViewModel = hiltViewModel(),
     navController: NavHostController
 ) {
-    val state = viewModel.state.collectAsState().value
-    val event = viewModel::onEvent
+    val  state = viewModel.state.collectAsState().value
+    val  event = viewModel::onEvent
 
-    LaunchedEffect(key1 = state.isNavigateToCoinDetailScreen) {
-        event(HomeEvent.navigateToDetails)
+
+    LaunchedEffect(key1 = state.isNavigateToNewPage) {
+        event(HomeEvent.navigate)
     }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        bottomBar = {
+            BottomNavigationBar(navController = navController)
+        },
+
         content = { padding ->
 
             Column(
@@ -63,18 +67,7 @@ fun HomeScreen(
                     .statusBarsPadding()
             ) {
                 if (!state.isLoading) {
-                    ArmanSearchBar(
-                        modifier = Modifier
-                            .padding(horizontal = MediumPadding1)
-                            .fillMaxWidth(),
-                        text = "",
-                        readOnly = true,
-                        onValueChange = {},
-                        onSearch = {},
-                        onClick = {
-                            navController.navigate(ScreenNavigation.SearchRouteScreen.route)
-                        }
-                    )
+
 
                     Spacer(modifier = Modifier.height(MediumPadding1))
                 }

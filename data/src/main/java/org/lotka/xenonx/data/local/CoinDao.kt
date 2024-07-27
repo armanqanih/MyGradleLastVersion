@@ -1,6 +1,7 @@
 package org.lotka.xenonx.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,10 +21,8 @@ interface CoinDao {
     @Query("SELECT * FROM coins")
     fun getAllCoins(): Flow<List<CoinEntity>>
 
-
-//    @Query("SELECT * FROM coins WHERE id = :coinId")
-//    fun getCoinByIdInDataBase(coinId: String): Flow<CoinEntity?>
-
+    @Delete
+    suspend fun deleteCoin(coin: CoinDetailEntity)
 
     @Query("SELECT * FROM coins_detail WHERE coinId = :coinId")
     fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailEntity?>

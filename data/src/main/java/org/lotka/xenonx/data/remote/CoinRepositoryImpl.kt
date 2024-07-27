@@ -26,11 +26,13 @@ class CoinRepositoryImpl @Inject constructor(
     private val api: CoinPaprikaApi,
     private val coinDao: CoinDao
 ) : CoinRepository {
-    override suspend fun getCoins(page: Int): Flow<Resource<List<CoinModel>>> {
+    override   fun getCoins(page: Int): Flow<Resource<List<CoinModel>>> {
         return flow {
             try {
                 emit(Resource.Loading(false))
-                val coins = api.getCoins(page).map { it.toCoinModel() }
+                val coins = withContext(Dispatchers.IO) {
+                    api.getCoins(page).map { it.toCoinModel() }
+                }
                 if (coins.isNotEmpty()) {
                     emit(Resource.Success(data = coins))
                 }
@@ -41,11 +43,14 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>> {
+    override   fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>> {
         return flow {
             try {
                 emit(Resource.Loading(false))
-                val coin = api.getCoinById(coinId).toCoinDetailModel()
+
+                val coin = withContext(Dispatchers.IO) {
+                    api.getCoinById(coinId).toCoinDetailModel()
+                }
                 emit(Resource.Success(data = coin))
             } catch (e: Exception) {
                 emit(Resource.Loading(false))
@@ -54,7 +59,7 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun searchCoins(query: String): Flow<Resource<List<CoinModel>>> {
+    override   fun searchCoins(query: String): Flow<Resource<List<CoinModel>>> {
         return flow {
             emit(Resource.Loading(true))
             try {
@@ -85,7 +90,7 @@ class CoinRepositoryImpl @Inject constructor(
 
 
 
-    override suspend fun getCoinsOfLocal(): Flow<List<CoinModel>> {
+    override   fun getCoinsOfLocal(): Flow<List<CoinModel>> {
         return coinDao.getAllCoins().map { it.map { it.toCoinModel() } }
     }
 
@@ -97,8 +102,12 @@ class CoinRepositoryImpl @Inject constructor(
         coinDao.updateCoinDetail(coinDetail.toCoinDetailEntity())
     }
 
-    override suspend fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?> {
+    override   fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?> {
         return coinDao.getCoinDetailByIdInDataBase(coinId).map { it?.toCoinDetailModel() }
+    }
+
+    override suspend fun deleteCoin(coin: CoinDetailModel) {
+        coinDao.deleteCoin(coin.toCoinDetailEntity())
     }
 
 

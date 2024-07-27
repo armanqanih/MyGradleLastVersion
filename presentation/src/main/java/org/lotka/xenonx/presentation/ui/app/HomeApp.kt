@@ -22,6 +22,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 
 
 import org.lotka.xenonx.presentation.ui.navigation.ScreenNavigation
+import org.lotka.xenonx.presentation.ui.screen.bookmark.BookMarkScreen
 import org.lotka.xenonx.presentation.ui.screen.detail.DetailScreen
 import org.lotka.xenonx.presentation.ui.screen.detail.DetailViewModel
 import org.lotka.xenonx.presentation.ui.screen.home.HomeScreen
@@ -58,10 +59,13 @@ fun HomeApp(
                     HomeScreen(navController = navController)
                 }
                 composable(route = ScreenNavigation.DetailRoutScreen.route + "/{coinId}") {
-                    DetailScreen()
+                    DetailScreen(navHostController = navController)
                 }
                 composable(route = ScreenNavigation.SearchRouteScreen.route) {
                     SearchScreen(navController)
+                }
+                composable(route = ScreenNavigation.BookMarkRoutScreen.route) {
+                    BookMarkScreen(navController = navController)
                 }
             }
         }

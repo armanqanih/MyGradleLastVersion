@@ -40,8 +40,8 @@ class HomeViewModel @Inject constructor (
                 getCoins(page = pages)
             }
 
-            HomeEvent.navigateToDetails -> {
-                _state.update {it.copy(isNavigateToCoinDetailScreen =! state.value.isNavigateToCoinDetailScreen) } }
+            HomeEvent.navigate -> {
+                _state.update {it.copy(isNavigateToNewPage =! state.value.isNavigateToNewPage) } }
 
             else -> {}
         }
