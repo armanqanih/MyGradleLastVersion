@@ -8,7 +8,7 @@ data class DetailState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val coin: CoinDetailModel? = null,
-    var snackBarVisible: Boolean = false,
+    var snackBarVisible: Boolean = true,
     val snackBarMessage: String = "",
     val snackBarType: SnackBarType = SnackBarType.SUCCESS
 )

@@ -26,7 +26,7 @@ class CoinRepositoryImpl @Inject constructor(
     private val api: CoinPaprikaApi,
     private val coinDao: CoinDao
 ) : CoinRepository {
-    override   fun getCoins(page: Int): Flow<Resource<List<CoinModel>>> {
+    override suspend  fun getCoins(page: Int): Flow<Resource<List<CoinModel>>> {
         return flow {
             try {
                 emit(Resource.Loading(false))
@@ -43,7 +43,7 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override   fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>> {
+    override suspend  fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>> {
         return flow {
             try {
                 emit(Resource.Loading(false))
@@ -59,7 +59,7 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override   fun searchCoins(query: String): Flow<Resource<List<CoinModel>>> {
+    override suspend  fun searchCoins(query: String): Flow<Resource<List<CoinModel>>> {
         return flow {
             emit(Resource.Loading(true))
             try {
@@ -90,7 +90,7 @@ class CoinRepositoryImpl @Inject constructor(
 
 
 
-    override   fun getCoinsOfLocal(): Flow<List<CoinModel>> {
+    override  suspend fun getCoinsOfLocal(): Flow<List<CoinModel>> {
         return coinDao.getAllCoins().map { it.map { it.toCoinModel() } }
     }
 
@@ -102,7 +102,7 @@ class CoinRepositoryImpl @Inject constructor(
         coinDao.updateCoinDetail(coinDetail.toCoinDetailEntity())
     }
 
-    override   fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?> {
+    override suspend  fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?> {
         return coinDao.getCoinDetailByIdInDataBase(coinId).map { it?.toCoinDetailModel() }
     }
 

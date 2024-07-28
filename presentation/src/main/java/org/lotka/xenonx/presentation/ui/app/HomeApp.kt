@@ -1,5 +1,6 @@
 package org.lotka.xenonx.presentation.ui.app
 
+import BottomNavigationBar
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Scaffold
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -19,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
+import dagger.hilt.android.lifecycle.HiltViewModel
 
 
 import org.lotka.xenonx.presentation.ui.navigation.ScreenNavigation
@@ -41,11 +44,15 @@ fun HomeApp(
     keyboardController: SoftwareKeyboardController,
 ) {
 
+       val homeViewModel : HomeViewModel = hiltViewModel()
+       val state = homeViewModel.state.collectAsState().value
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
-
+            if(!state.isLoading){
+            BottomNavigationBar(navController = navController)
+            }
         },
         content = { paddingValues ->
             val bottomPadding = paddingValues.calculateBottomPadding()
@@ -55,7 +62,6 @@ fun HomeApp(
                 modifier = Modifier.padding(bottom = bottomPadding)
             ) {
                 composable(route = ScreenNavigation.HomeRoutScreen.route) { backStackEntry ->
-
                     HomeScreen(navController = navController)
                 }
                 composable(route = ScreenNavigation.DetailRoutScreen.route + "/{coinId}") {

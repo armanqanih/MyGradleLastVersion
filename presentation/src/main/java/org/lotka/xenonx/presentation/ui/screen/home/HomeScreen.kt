@@ -47,17 +47,13 @@ fun HomeScreen(
     val  event = viewModel::onEvent
 
 
-    LaunchedEffect(key1 = state.isNavigateToNewPage) {
-        event(HomeEvent.navigate)
-    }
+//    LaunchedEffect(key1 = state.isNavigateToNewPage) {
+//        event(HomeEvent.navigate)
+//    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            BottomNavigationBar(navController = navController)
-        },
-
-        content = { padding ->
+            content = { padding ->
 
             Column(
                 modifier = Modifier
@@ -66,11 +62,8 @@ fun HomeScreen(
                     .padding(top = MediumPadding1)
                     .statusBarsPadding()
             ) {
-                if (!state.isLoading) {
-
 
                     Spacer(modifier = Modifier.height(MediumPadding1))
-                }
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),

@@ -9,15 +9,15 @@ import org.lotka.xenonx.domain.util.Resource
 
 interface CoinRepository {
 
-    fun getCoins(page: Int): Flow<Resource<List<CoinModel>>>
+    suspend fun getCoins(page: Int): Flow<Resource<List<CoinModel>>>
 
-    fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>>
+    suspend fun getCoinById(coinId: String): Flow<Resource<CoinDetailModel>>
 
-    fun searchCoins(query: String): Flow<Resource<List<CoinModel>>>
+   suspend fun searchCoins(query: String): Flow<Resource<List<CoinModel>>>
 
-    fun getCoinsOfLocal(): Flow<List<CoinModel>>
+   suspend fun getCoinsOfLocal(): Flow<List<CoinModel>>
 
-    fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?>
+   suspend fun getCoinDetailByIdInDataBase(coinId: String): Flow<CoinDetailModel?>
 
     suspend fun updateData(coins: List<CoinModel>)
 

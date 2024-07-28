@@ -1,6 +1,12 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Movie
@@ -34,18 +40,22 @@ fun BottomNavigationBar(
     val items = listOf(
         BottomItem(
             title = stringResource(R.string.Home),
-            icon = Icons.Rounded.Home
-        ), BottomItem(
-            title = stringResource(R.string.search),
-            icon = Icons.Rounded.Search
+            selectIcon = Icons.Filled.Home,
+            unSelectIcon = Icons.Outlined.Home
         ),
-                BottomItem(
+        BottomItem(
+            title = stringResource(R.string.search),
+            selectIcon = Icons.Filled.Search,
+            unSelectIcon = Icons.Outlined.Search
+        ),
+        BottomItem(
             title = stringResource(R.string.bookmark),
-            icon = Icons.Rounded.Bookmark
+            selectIcon = Icons.Filled.Bookmark,
+            unSelectIcon = Icons.Outlined.Bookmark
         )
     )
 
-    val selected = rememberSaveable {
+    val selectedItem = rememberSaveable {
         mutableIntStateOf(0)
     }
 
@@ -54,39 +64,43 @@ fun BottomNavigationBar(
             modifier = Modifier.background(MaterialTheme.colorScheme.inverseOnSurface)
         ) {
             items.forEachIndexed { index, bottomItem ->
-                NavigationBarItem(selected = selected.intValue == index, onClick = {
-                    selected.intValue = index
-                    when (selected.intValue) {
-                        0 -> {
-                            viewModel.onEvent(HomeEvent.navigate)
-                            navController.popBackStack()
-                            navController.navigate(ScreenNavigation.HomeRoutScreen.route)
-                        }
+                NavigationBarItem(
+                    selected = selectedItem.intValue == index,
+                    onClick = {
+                        selectedItem.intValue = index
+                        when (selectedItem.intValue) {
+                            0 -> {
+                                viewModel.onEvent(HomeEvent.navigate)
+                                navController.popBackStack()
+                                navController.navigate(ScreenNavigation.HomeRoutScreen.route)
+                            }
 
-                        1 -> {
-                            viewModel.onEvent(HomeEvent.navigate)
-                            navController.popBackStack()
-                            navController.navigate(ScreenNavigation.SearchRouteScreen.route)
-                        }
+                            1 -> {
+                                viewModel.onEvent(HomeEvent.navigate)
+                                navController.popBackStack()
+                                navController.navigate(ScreenNavigation.SearchRouteScreen.route)
+                            }
 
-                        2 -> {
-                            viewModel.onEvent(HomeEvent.navigate)
-                            navController.popBackStack()
-                            navController.navigate(ScreenNavigation.BookMarkRoutScreen.route)
-                        }
+                            2 -> {
+                                viewModel.onEvent(HomeEvent.navigate)
+                                navController.popBackStack()
+                                navController.navigate(ScreenNavigation.BookMarkRoutScreen.route)
+                            }
 
-                    }
-                }, icon = {
-                    Icon(
-                        imageVector = bottomItem.icon,
-                        contentDescription = bottomItem.title,
-                        tint = MaterialTheme.colorScheme.onBackground
-                    )
-                }, label = {
-                    Text(
-                        text = bottomItem.title, color = MaterialTheme.colorScheme.onBackground
-                    )
-                })
+                        }
+                    }, icon = {
+                        Icon(
+                            imageVector = if(selectedItem.intValue == index)
+                                    bottomItem.selectIcon else
+                                    bottomItem.unSelectIcon,
+                            contentDescription = bottomItem.title,
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }, label = {
+                        Text(
+                            text = bottomItem.title, color = MaterialTheme.colorScheme.onBackground
+                        )
+                    })
             }
         }
     }
@@ -94,5 +108,7 @@ fun BottomNavigationBar(
 }
 
 data class BottomItem(
-    val title: String, val icon: ImageVector
+    val title: String,
+    val selectIcon: ImageVector,
+    val unSelectIcon: ImageVector
 )

@@ -3,7 +3,10 @@ package org.lotka.xenonx.presentation.ui.screen.detail.compose
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,8 +41,8 @@ fun DetailsTopBar(
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = null,
+                    imageVector = Icons.Filled.ArrowBack ,
+                    contentDescription = null
                 )
             }
         },
@@ -47,13 +50,16 @@ fun DetailsTopBar(
 
             IconButton(onClick = onBookMarkClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    imageVector = if (onBookMarkClick != null)
+                                    Icons.Outlined.Bookmark
+                                       else
+                                    Icons.Filled.Bookmark ,
                     contentDescription = null
                 )
             }
             IconButton(onClick = onShareClick) {
                 Icon(
-                    imageVector = Icons.Default.Share,
+                    imageVector = Icons.Filled.Share,
                     contentDescription = null
                 )
             }

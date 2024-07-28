@@ -50,15 +50,15 @@ fun DetailScreen(
 
     LaunchedEffect(key1 = state.snackBarVisible) {
         if (state.snackBarVisible) {
-            delay(3000L)
-           state.snackBarVisible = false
+            delay(1000L)
+            viewModel.onEvent(DetailEvent.ShowSnackBar) // Reset the snackbar visibility after showing
         }
     }
 
    CoinSnackBar(
         visible =  state.snackBarVisible,
         text = state.snackBarMessage,
-        onDismiss = { state.snackBarVisible = false },
+        onDismiss = { viewModel.onEvent(DetailEvent.ShowSnackBar) },
         snackBarType = state.snackBarType
     )
 
